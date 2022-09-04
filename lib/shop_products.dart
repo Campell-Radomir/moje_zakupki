@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moje_zakupki/add_product_form.dart';
 import 'package:moje_zakupki/db/product_dao.dart';
+import 'package:moje_zakupki/edit_product_form.dart';
 import 'package:moje_zakupki/product.dart';
 
 import 'category_enum.dart';
@@ -47,10 +48,10 @@ class _ShopProductsState extends State<ShopProducts> {
                             Category category =
                                 snapshot.data!.keys.elementAt(index);
                             return CategoryProducts(
+                                shop: widget.shop,
                                 category: category,
                                 products: snapshot.data![category] ?? [],
-                              deleteCallback: () => setState(() {}),
-                              undoDeleteCallback: () => setState(() {}),
+                              onDataChangeCallback: () => setState(() {}),
                             );
                           }),
                         );
@@ -87,7 +88,7 @@ class _ShopProductsState extends State<ShopProducts> {
 
   void _routeToAddProduct() {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => AddProductForm(shop: widget.shop),
+      builder: (context) => AddProductFormWidget(shop: widget.shop),
     )).whenComplete(() => setState(() {}));
   }
 }
@@ -95,13 +96,13 @@ class _ShopProductsState extends State<ShopProducts> {
 class CategoryProducts extends StatefulWidget {
   const CategoryProducts(
       {Key? key, required this.category, required this.products,
-        required this.deleteCallback, required this.undoDeleteCallback})
+        required this.onDataChangeCallback, required this.shop})
       : super(key: key);
 
+  final Shop shop;
   final Category category;
   final List<Product> products;
-  final Function deleteCallback;
-  final Function undoDeleteCallback;
+  final Function onDataChangeCallback;
 
   @override
   State<CategoryProducts> createState() => _CategoryProductsState();
@@ -134,24 +135,31 @@ class _CategoryProductsState extends State<CategoryProducts> {
             title: Text(product.name),
             subtitle: Text('Sztuk: ${product.pieces}'),
             onLongPress: () => _deleteProduct(product),
+            trailing: IconButton(icon: const Icon(Icons.edit), onPressed: () => _editProduct(product),),
           ),
         );
       }),
     );
   }
 
+  _editProduct(Product product) async {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => EditProductFormWidget(editProduct: product, shop: widget.shop),)
+    ).whenComplete(() => widget.onDataChangeCallback());
+  }
+
   _deleteProduct(Product product) async {
     await _productDao.delete(product);
 
     if(!mounted) return;
-    widget.deleteCallback();
+    widget.onDataChangeCallback();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text('Usunięto ${product.name}'),
       action: SnackBarAction(
         label: 'Undo',
         onPressed: () async {
           await _productDao.save(product);
-          widget.undoDeleteCallback();
+          widget.onDataChangeCallback();
         },
       ),
     ));
