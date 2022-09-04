@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class Shop {
-  Uuid id = Uuid();
+  final String id = const Uuid().v4();
   String name;
   int priority;
   Color backgroundColor;
