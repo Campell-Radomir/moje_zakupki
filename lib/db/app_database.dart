@@ -34,8 +34,8 @@ class AppDatabase {
     _id $idType,
     name TEXT NOT NULL,
     priority INTEGER NOT NULL,
-    backgroundColor TEXT NOT NULL,
-    foregroundColor TEXT NOT NULL
+    backgroundColor INTEGER NOT NULL,
+    foregroundColor INTEGER NOT NULL
     );
     ''');
 
@@ -45,6 +45,7 @@ class AppDatabase {
     name TEXT NOT NULL,
     category TEXT NOT NULL,
     pieces INTEGER NOT NULL,
+    shopId TEXT NOT NULL,
     FOREIGN KEY(shopId) REFERENCES ${ShopDao.tableName}(id)
     );
     ''');

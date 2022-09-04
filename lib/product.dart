@@ -10,7 +10,7 @@ class Product {
   int pieces;
   late final String shopId;
 
-  Product({required this.name, required this.category,this.pieces = 1,required Shop shop}) {
+  Product({required this.name, this.category = Category.other,this.pieces = 1,required Shop shop}) {
     id = _uuid.v4();
     shopId = shop.id;
   }
@@ -18,7 +18,7 @@ class Product {
   Product._fromDB({required this.id,required this.name, required this.category,this.pieces = 1,required this.shopId});
 
   Map<String, dynamic> toMap() => {
-    'id': id,
+    '_id': id,
     'name': name,
     'category': category.name,
     'pieces': pieces,
@@ -26,7 +26,7 @@ class Product {
   };
 
   factory Product.fromMap(Map<String, dynamic> json) => Product._fromDB(
-    id: json['id'],
+    id: json['_id'],
     name: json['name'],
     category: Category.values.byName(json['category']),
     pieces: json['pieces'],

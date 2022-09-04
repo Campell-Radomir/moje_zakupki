@@ -11,7 +11,7 @@ class Shop {
   
   
   Shop({required this.name, this.priority = 0,
-    this.backgroundColor = Colors.blueAccent, this.foregroundColor = Colors.black}) {
+    this.backgroundColor = Colors.cyan, this.foregroundColor = Colors.black}) {
     id = _uuid.v4();
   }
 
@@ -19,19 +19,19 @@ class Shop {
     required this.backgroundColor, required this.foregroundColor});
 
   Map<String, dynamic> toMap() => {
-    'id': id,
+    '_id': id,
     'name': name,
     'priority': priority,
-    'backgroundColor':backgroundColor,
-    'foregroundColor': foregroundColor
+    'backgroundColor':backgroundColor.value,
+    'foregroundColor': foregroundColor.value
   };
 
   factory Shop.fromMap(Map<String, dynamic> json) => Shop._fromDB(
-      id: json['id'],
+      id: json['_id'],
       name: json['name'],
       priority: json['priority'],
-      backgroundColor: json['backgroundColor'],
-      foregroundColor: json['foregroundColor']
+      backgroundColor: Color(json['backgroundColor']),
+      foregroundColor: Color(json['foregroundColor']),
   );
 
   static int compare(Shop a, Shop b) {

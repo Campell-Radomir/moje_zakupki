@@ -26,6 +26,6 @@ class ShopDao {
   Future<void> delete(Shop shop) async {
     final db = await _database.database;
 
-    await db.delete(tableName, where: 'id = ?', whereArgs: [shop.id]);
+    await db.delete(tableName, where: '_id = ?', whereArgs: [shop.id]);
   }
 }

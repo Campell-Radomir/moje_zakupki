@@ -29,6 +29,6 @@ class ProductDao {
   Future<void> delete(Product product) async {
     final db = await _database.database;
 
-    await db.delete(tableName, where: 'id = ?', whereArgs: [product.id]);
+    await db.delete(tableName, where: '_id = ?', whereArgs: [product.id]);
   }
 }

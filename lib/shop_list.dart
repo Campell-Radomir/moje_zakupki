@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moje_zakupki/add_shop_form.dart';
 import 'package:moje_zakupki/db/shop_dao.dart';
 import 'package:moje_zakupki/shop_products.dart';
 
@@ -12,9 +13,17 @@ class ShopList extends StatefulWidget {
 }
 
 class _ShopListState extends State<ShopList> {
+
+  final ShopDao shopDao = ShopDao();
   Future<List<Shop>> getShopList() async {
-    await Future.delayed(const Duration(seconds: 2));
-    return Shop.generateShops();
+    return shopDao.findAll();
+  }
+
+  _routeToAddShop() {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) =>
+            const AddShopForm(),)
+    ).whenComplete(() => setState(() {}));
   }
 
   @override
@@ -22,7 +31,8 @@ class _ShopListState extends State<ShopList> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(floating: true),
+          const SliverAppBar(floating: true,
+          title: Text("Moje zakupki"),),
           SliverList(
               delegate: SliverChildListDelegate([
             Center(
@@ -46,20 +56,24 @@ class _ShopListState extends State<ShopList> {
           ]))
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _routeToAddShop,
+        tooltip: 'Dodaj',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
 
 class ShopCard extends StatelessWidget {
-  ShopCard({
+  const ShopCard({
     Key? key,
     required this.shop,
   }) : super(key: key);
 
-  final ShopDao shopDao = ShopDao();
   final Shop shop;
 
-  routeToShopProductList(BuildContext context) {
+  _routeToShopProductList(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => ShopProducts(shop: shop),)
     );
@@ -81,7 +95,7 @@ class ShopCard extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () => routeToShopProductList(context),
+      onTap: () => _routeToShopProductList(context),
     );
   }
 }
