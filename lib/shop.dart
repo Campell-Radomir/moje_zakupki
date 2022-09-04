@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 class Shop {
-  final String id = const Uuid().v4();
+  static const _uuid = Uuid();
+  late final String id;
   String name;
   int priority;
   Color backgroundColor;
@@ -10,7 +11,28 @@ class Shop {
   
   
   Shop({required this.name, this.priority = 0,
-    this.backgroundColor = Colors.blueAccent, this.foregroundColor = Colors.black});
+    this.backgroundColor = Colors.blueAccent, this.foregroundColor = Colors.black}) {
+    id = _uuid.v4();
+  }
+
+  Shop._fromDB({required this.id, required this.name, required this.priority,
+    required this.backgroundColor, required this.foregroundColor});
+
+  Map<String, dynamic> toMap() => {
+    'id': id,
+    'name': name,
+    'priority': priority,
+    'backgroundColor':backgroundColor,
+    'foregroundColor': foregroundColor
+  };
+
+  factory Shop.fromMap(Map<String, dynamic> json) => Shop._fromDB(
+      id: json['id'],
+      name: json['name'],
+      priority: json['priority'],
+      backgroundColor: json['backgroundColor'],
+      foregroundColor: json['foregroundColor']
+  );
 
   static int compare(Shop a, Shop b) {
     if (a.priority == b.priority) {

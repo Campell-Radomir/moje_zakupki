@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moje_zakupki/db/shop_dao.dart';
 import 'package:moje_zakupki/shop_products.dart';
 
 import 'shop.dart';
@@ -50,11 +51,12 @@ class _ShopListState extends State<ShopList> {
 }
 
 class ShopCard extends StatelessWidget {
-  const ShopCard({
+  ShopCard({
     Key? key,
     required this.shop,
   }) : super(key: key);
 
+  final ShopDao shopDao = ShopDao();
   final Shop shop;
 
   routeToShopProductList(BuildContext context) {

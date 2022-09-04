@@ -94,7 +94,7 @@ class _CategoryProductsState extends State<CategoryProducts> {
     if (widget.products.isEmpty) return Container();
     var hslColor = HSLColor.fromColor(widget.category.color);
     return ExpansionTile(
-      title: Text(widget.category.name),
+      title: Text(widget.category.displayName),
       backgroundColor: widget.category.color,
       collapsedBackgroundColor: widget.category.color,
       textColor: Colors.black,

@@ -3,16 +3,35 @@ import 'package:uuid/uuid.dart';
 
 import 'shop.dart';
 class Product {
-
-  final String id = const Uuid().v4();
+  static const _uuid = Uuid();
+  late final String id;
   String name;
   Category category;
   int pieces;
   late final String shopId;
 
   Product({required this.name, required this.category,this.pieces = 1,required Shop shop}) {
+    id = _uuid.v4();
     shopId = shop.id;
   }
+
+  Product._fromDB({required this.id,required this.name, required this.category,this.pieces = 1,required this.shopId});
+
+  Map<String, dynamic> toMap() => {
+    'id': id,
+    'name': name,
+    'category': category.name,
+    'pieces': pieces,
+    'shopId': shopId
+  };
+
+  factory Product.fromMap(Map<String, dynamic> json) => Product._fromDB(
+    id: json['id'],
+    name: json['name'],
+    category: Category.values.byName(json['category']),
+    pieces: json['pieces'],
+    shopId: json['shopId']
+  );
 
   static int compare(Product a, Product b) {
     return a.name.compareTo(b.name);

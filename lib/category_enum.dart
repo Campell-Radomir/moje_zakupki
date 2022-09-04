@@ -13,7 +13,7 @@ enum Category {
   vegetables('Owoce i Warzywa', Colors.green),
   ;
 
-  const Category(this.name, this.color);
-  final String name;
+  const Category(this.displayName, this.color);
+  final String displayName;
   final Color color;
 }
