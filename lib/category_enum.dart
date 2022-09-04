@@ -9,7 +9,7 @@ enum Category {
   electronic('Elektronika', Colors.cyan),
   fish('Ryby', Colors.blueGrey),
   meat('Mięso', Colors.red),
-  other('Inne', Colors.white60),
+  other('Inne', Colors.indigo),
   vegetables('Owoce i Warzywa', Colors.green),
   ;
 
